@@ -58,7 +58,7 @@ window.addEventListener("DOMContentLoaded", function(){
 
 // show person based on item
 function showPerson(person){
-  console.log(currentItem);
+  // console.log(currentItem);
   const item = reviews[person];
   img.src = item.img;
   author.textContent = item.author;
