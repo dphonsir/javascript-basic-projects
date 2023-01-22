@@ -1,3 +1,4 @@
+// items
 const menu = [
   {
     id: 1,
@@ -71,4 +72,82 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "steak dinner",
+    category: "dinner",
+    price: 39.99,
+    img: "./images/item-10.jpeg",
+    desc: `lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, numquam perspiciatis velit id distinctio blanditiis soluta esse dolorem accusantium voluptatibus?`,
+  },
 ];
+
+const sectionCenter = document.querySelector(".section-center");
+const btnContainer = document.querySelector(".btn-container");
+
+// load items
+window.addEventListener("DOMContentLoaded", function () {
+  displayMenuButtons();
+  categorizeItems();
+  displayMenuItems(menu);
+});
+
+function displayMenuButtons() {
+  const categories = menu.reduce(
+    function (values, item) {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["all"]
+  );
+  const catBtns = categories
+    .map(function (category) {
+      return `<button
+      class="filter-btn"
+      type="button"
+      data-cat="${category}"
+      aria-label="${category}"
+      >
+      ${category}
+      </button>`;
+    })
+    .join("");
+  btnContainer.innerHTML = catBtns;
+}
+
+function categorizeItems() {
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      const menuCat = e.currentTarget.dataset.cat;
+      const catItems = menu.filter(function (item) {
+        return item.category === menuCat;
+      });
+      if (menuCat === "all") {
+        displayMenuItems(menu);
+      } else {
+        displayMenuItems(catItems);
+      }
+    });
+  });
+}
+
+function displayMenuItems(menuItems) {
+  const displayMenu = menuItems
+    .map(function (item) {
+      return `<article class="menu-item">
+      <img src=${item.img} alt=${item.title} class="photo" />
+      <div class="item-info">
+        <header>
+          <h4>${item.title}</h4>
+          <h4 class="price">${item.price}</h4>
+        </header>
+        <p class="item-text">${item.desc}</p>
+      </div>
+    </article>`;
+    })
+    .join();
+  sectionCenter.innerHTML = displayMenu;
+}
